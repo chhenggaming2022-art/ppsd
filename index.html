@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>កម្មវិធីគណនាថ្លៃអគ្គិសនី</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Khmer OS Battambang', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .calculator-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2ecc71;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e8f8f5;
+            border-left: 5px solid #2ecc71;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .result-box p {
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .result-box span {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator-card">
+    <h2>⚡ គណនាថ្លៃអគ្គិសនី</h2>
+    
+    <div class="form-group">
+        <label for="old-num">លេខទmeter ចាស់ (kWh):</label>
+        <input type="number" id="old-num" placeholder="បញ្ចូលលេខខែមុន" min="0">
+    </div>
+
+    <div class="form-group">
+        <label for="new-num">លេខទmeter ថ្មី (kWh):</label>
+        <input type="number" id="new-num" placeholder="បញ្ចូលលេខខែនេះ" min="0">
+    </div>
+
+    <div class="form-group">
+        <label for="price-per-kwh">តម្លៃក្នុង ១ គីឡូ (៛):</label>
+        <input type="number" id="price-per-kwh" value="710" placeholder="ឧទាហរណ៍៖ 710">
+    </div>
+
+    <button onclick="calculateElectricity()">គណនាប្រាក់ត្រូវបង់</button>
+
+    <div class="result-box" id="result">
+        <p>ចំនួនគីឡូដែលប្រើ៖ <span id="total-kwh">0</span> kWh</p>
+        <p>ទឹកប្រាក់សរុប៖ <span id="total-price">0</span> រៀល</p>
+    </div>
+</div>
+
+<script>
+    function calculateElectricity() {
+        // ទាញយកតម្លៃពី Input
+        const oldNum = parseFloat(document.getElementById('old-num').value);
+        const newNum = parseFloat(document.getElementById('new-num').value);
+        const pricePerKwh = parseFloat(document.getElementById('price-per-kwh').value);
+        const resultBox = document.getElementById('result');
+
+        // ការផ្ទៀងផ្ទាត់ទិន្នន័យ (Validation)
+        if (isNaN(oldNum) || isNaN(newNum) || isNaN(pricePerKwh)) {
+            alert("សូមបញ្ចូលព័ត៌មានក្នុងប្រឡោះនីមួយៗឱ្យបានត្រឹមត្រូវ!");
+            return;
+        }
+
+        if (newNum < oldNum) {
+            alert("លេខទmeterថ្មី មិនអាចតូចជាងលេខទmeterចាស់បានទេ!");
+            return;
+        }
+
+        // គណនាចំនួនគីឡូ និងទឹកប្រាក់
+        const totalKwh = newNum - oldNum;
+        const totalPrice = totalKwh * pricePerKwh;
+
+        // បង្ហាញលទ្ធផលលើអេក្រង់
+        document.getElementById('total-kwh').innerText = totalKwh.toLocaleString();
+        document.getElementById('total-price').innerText = totalPrice.toLocaleString();
+        
+        // បើកបង្ហាញប្រអប់លទ្ធផល
+        resultBox.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
